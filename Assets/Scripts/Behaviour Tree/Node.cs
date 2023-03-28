@@ -17,6 +17,7 @@ namespace BehaviourTree
 
         public Node _parent;
         protected List<Node> children = new List<Node>();
+        
 
         public Node() 
         {

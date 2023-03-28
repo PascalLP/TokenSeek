@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TokenSearch : MonoBehaviour
 {
@@ -11,10 +12,18 @@ public class TokenSearch : MonoBehaviour
     public GameObject[] tokens; 
     private int currentTokenIndex = 0;
 
+    // NavMesh
+    private NavMeshAgent agent;
+
+    // Animator
+    private Animator _animator;
+
     void Start()
     {
         // Find all Tokens
         tokens = GameObject.FindGameObjectsWithTag("Token");
+        _animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
@@ -43,8 +52,17 @@ public class TokenSearch : MonoBehaviour
 
         // Move towards the closest token
         Vector3 direction = closestToken.transform.position - transform.position;
-        transform.position += direction.normalized * speed * Time.deltaTime;
-        transform.LookAt(closestToken.transform.position);
+        //transform.position += direction.normalized * speed * Time.deltaTime;
+
+        // Animator
+        _animator.SetBool("Walking", true);
+
+        // NavMesh
+        agent.destination = closestToken.transform.position;
+        if (direction != Vector3.zero)
+        {
+            transform.LookAt(transform.position + direction);
+        }
 
         // Check if the token is close enough to pick up
         if (closestDistance < pickupRadius)

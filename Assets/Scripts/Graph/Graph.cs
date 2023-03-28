@@ -17,39 +17,6 @@ public class Graph : MonoBehaviour
     public float gridCellSize = 1;
 
 
-    // Drawing Lines for debugging
-#if UNITY_EDITOR
-    [Header("Gizmos")]
-    /// <summary>WARNING: This property is used by Gizmos only and is removed from the build. DO NOT reference it outside of Editor-Only code.</summary>
-    public float _nodeGizmoRadius = 0.5f;
-    /// <summary>WARNING: This property is used by Gizmos only and is removed from the build. DO NOT reference it outside of Editor-Only code.</summary>
-    public Color _edgeGizmoColor = Color.white;
-
-    private void OnDrawGizmos()
-    {
-        if (nodeList == null) return;
-
-        // nodes
-        foreach (GraphNode node in nodeList)
-        {
-            if (node == null) continue;
-
-            //Draw node with node color
-            Gizmos.color = node._nodeGizmoColor;
-            Gizmos.DrawSphere(node.transform.position, _nodeGizmoRadius);
-
-            //Draw line with edge color
-            Gizmos.color = _edgeGizmoColor;
-            //grab adjacencyList from node, and draw lines
-            List<GraphNode> neighbors = GetNeighbors(node);
-            foreach (GraphNode neighbor in neighbors)
-            {
-                Gizmos.DrawLine(node.transform.position, neighbor.transform.position);
-            }
-        }
-    }
-#endif
-
     public GraphNode FindAdjacentNode(GameObject obj)
     {
         GraphNode closestNode = null;

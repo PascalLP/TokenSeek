@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 using BehaviourTree;
 
@@ -39,8 +40,8 @@ public class ChaserBT : BTree
 
             new Sequence(new List<Node>
             {
-                /*new FOVDetect(transform)*/
-                new RayCastDetect(transform, obstacleLayer),
+                new FOVDetect(transform)
+                /*new RayCastDetect(transform, obstacleLayer)*/,
                 new TargetInRange(transform),
                 new SeekTarget(transform),
             }),

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 using BehaviourTree;
 
@@ -17,6 +18,9 @@ public class SeekTarget : Node
     {
         Debug.Log("SeekTarget Running");
         Transform target = (Transform)GetData("target");
+        // NavMesh
+        NavMeshAgent agent = _transform.gameObject.GetComponent<NavMeshAgent>();
+
         //Debug.Log("Chaser Position: " + _transform.position + "  Seeker Position: " + target.position);
         if(Vector3.Distance(_transform.position, target.position) > 0.01f)
         {
@@ -27,7 +31,10 @@ public class SeekTarget : Node
                 return state;
             }
             Debug.Log("Seeking Target");
+
+            // TURN NAV MESH ON/OFF HERE
             _transform.position = Vector3.MoveTowards(_transform.position, target.position, ChaserBT.speed * Time.deltaTime);
+            //agent.destination = target.position;
             _transform.LookAt(target.position);
             state = NodeState.RUNNING;
             return state;

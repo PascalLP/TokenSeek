@@ -148,10 +148,6 @@ public class PathFinding : MonoBehaviour
     }
     private void SpawnPoints(List<Transform> points, GameObject prefab, Color color) {
         for (int i = 0; i < points.Count; ++i) {
-#if UNITY_EDITOR
-            // Scene view visuals
-            points[i].GetComponent<GraphNode>()._nodeGizmoColor = color;
-#endif
 
             // Game view visuals
             GameObject obj = Instantiate(prefab, points[i].position, Quaternion.identity, points[i]);
@@ -161,7 +157,6 @@ public class PathFinding : MonoBehaviour
     }
     private void ClearPoints() {
         foreach (GraphNode node in graph.nodeList) {
-            node._nodeGizmoColor = new Color(Color.white.r, Color.white.g, Color.white.b, 0.5f);
             for (int c = 0; c < node.transform.childCount; ++c) {
                 if (node.transform.GetChild(c).name == "DEBUG_POINT") {
                     Destroy(node.transform.GetChild(c).gameObject);
