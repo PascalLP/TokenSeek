@@ -7,7 +7,7 @@ namespace BehaviourTree
     public abstract class BTree : MonoBehaviour
     {
 
-        private Node _root = null;
+        public Node _root = null;
 
         protected void Start()
         {

@@ -16,26 +16,42 @@ public class FOVDetect : Node
         _animator = transform.GetComponent<Animator>();
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(_transform.position, _transform.position + new Vector3(ChaserBT.fovRange,0,0));
+    }
+
     public override NodeState Evaluate()
     {
+        Debug.Log("FOVDetect Running");
         object t = GetData("target");
         if (t == null)
         {
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, ChaserBT.fovRange, _enemyLayerMask);
-            
-            if(colliders.Length > 0)
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, ChaserBT.fovRange);
+            Debug.Log(colliders[0].tag.ToString());
+            if (colliders.Length > 0)
             {
-                _parent._parent.SetData("target", colliders[0].transform);
-                _animator.SetBool("Walking", true);
-                state = NodeState.SUCCESS;
-                return state;
+                Debug.Log("There are colliders");
+                foreach (Collider collider in colliders)
+                {
+                    Debug.Log(collider.tag.ToString());
+                    if (collider.CompareTag("Seeker") || collider.CompareTag("Player"))
+                    {
+                        _parent._parent.SetData("target", collider.transform);
+                        _animator.SetBool("Walking", true);
+                        state = NodeState.SUCCESS;
+                        Debug.Log("Found a Seeker!");
+                        return state;
+                    }
+                }
             }
 
-            //_parent._parent.ClearData("target");
+            _parent._parent.ClearData("target");
+            Debug.Log("Did NOT find a Seeker! But I still looked");
             state = NodeState.FAILURE;
             return state;
         }
-
+        Debug.Log("There was already a seeker detected");
         state = NodeState.SUCCESS;
         return state;
     }

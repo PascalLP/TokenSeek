@@ -39,6 +39,7 @@ namespace BehaviourTree
 
         public virtual NodeState Evaluate() => NodeState.FAILURE;
 
+        // Dictionary containing the Node data
         private Dictionary<string, object> _data = new Dictionary<string, object>();
 
         public void SetData(string key, object value)
